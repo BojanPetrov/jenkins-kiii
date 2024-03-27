@@ -7,10 +7,10 @@ node {
        app = docker.build("bojanpetrov/jenkins-kiii")
     }
     stage('Push image') {   
-        docker.withRegistry('https://registry.hub.docker.com/v2/', 'dockerhub') {
-            app.push("${env.BRANCH_NAME}-${env.BUILD_NUMBER}")
-            app.push("${env.BRANCH_NAME}-latest")
-            // signal the orchestrator that there is a new version
-        }
+    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub') {
+        docker.image("bojanpetrov/jenkins-kiii:${env.BRANCH_NAME}-${env.BUILD_NUMBER}").push()
+        docker.image("bojanpetrov/jenkins-kiii:${env.BRANCH_NAME}-latest").push()
+        // signal the orchestrator that there is a new version
     }
+}
 }
